@@ -7,14 +7,14 @@ import numpy as np
 import numpy.typing as npt
 import scipy.stats as stats
 
-from .model_settings import HestonModelSettings
-from .numerical_schemes import NumScheme
+from compfin_assignment_3.option_pricing.model_settings import BSModelSettings
+from compfin_assignment_3.option_pricing.numerical_schemes import NumScheme
 
 
 class BinaryOption:
     """Simulate and analytically price a binary option."""
 
-    def __init__(self, config: HestonModelSettings, numerical_scheme: str = "euler") -> None:
+    def __init__(self, config: BSModelSettings, numerical_scheme: str = "euler") -> None:
         """Initialize BinaryOption object."""
         self.config = config
         self.num_scheme = numerical_scheme
@@ -22,7 +22,7 @@ class BinaryOption:
     @classmethod
     def simulate_binary_option(
         cls,
-        config: HestonModelSettings,
+        config: BSModelSettings,
         numerical_scheme: str,
     ) -> tuple[float, float, float]:
         """Simulate and price a binary option."""
@@ -40,7 +40,7 @@ class BinaryOption:
     @classmethod
     def compute_binary_option_price_analytical(
         cls,
-        config: HestonModelSettings,
+        config: BSModelSettings,
     ) -> float:
         """Compute the price of a binary option."""
         model_sim = cls(config)
@@ -55,16 +55,16 @@ class BinaryOption:
         """Calculate the d2 term for the analytical formula."""
         return (
             math.log(self.config.s_0 / self.config.strike)
-            + (self.config.risk_free_rate - 0.5 * self.config.v_0) * self.config.t_end
-        ) / (math.sqrt(self.config.v_0) * math.sqrt(self.config.t_end))
+            + (self.config.risk_free_rate - 0.5 * self.config.sigma**2) * self.config.t_end
+        ) / (self.config.sigma * math.sqrt(self.config.t_end))
 
     def set_up_numerical_scheme(self) -> callable:
         """Sets up the numerical scheme."""
         match self.num_scheme:
             case "euler":
-                return partial(NumScheme.gbm_model_simulation, numerical_scheme="euler")
+                return partial(NumScheme.asset_price_simulation, numerical_scheme="euler")
             case "milstein":
-                return partial(NumScheme.gbm_model_simulation, numerical_scheme="milstein")
+                return partial(NumScheme.asset_price_simulation, numerical_scheme="milstein")
             case _:
                 raise ValueError("Invalid numerical scheme.")
 
