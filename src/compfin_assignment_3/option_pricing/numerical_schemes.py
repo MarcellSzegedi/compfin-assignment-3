@@ -6,7 +6,7 @@ import numba as nb
 import numpy as np
 import numpy.typing as npt
 
-from compfin_assignment_3.option_pricing.model_settings import BSModelSettings
+from compfin_assignment_3.option_pricing.mc_sim_settings import BSModelSettings
 
 
 class NumScheme:
@@ -50,6 +50,7 @@ class NumScheme:
             n_trajectories=config.n_trajectories,
             stoc_increments=model_sim.asset_stochastic_increments,
         )
+        # return model_sim.num_scheme()
 
     def _simulate_stochastic_increments(self) -> npt.NDArray[np.float64]:
         """Simulate stochastic increments for the asset price process."""
@@ -117,3 +118,31 @@ class NumScheme:
                 * (stoc_increments[:, col_idx - 1] * stoc_increments[:, col_idx - 1] - step_size)
             )
         return s_t
+
+    # def euler_scheme(self) -> npt.NDArray[np.float64]:
+    #     """Calculates n_trajectories number of trajectories using Euler scheme."""
+    #     drift = self.config.drift * self.config.step_size
+    #     stochastic_increments = self.asset_stochastic_increments * self.config.sigma
+    #
+    #     price_increments = drift + stochastic_increments + 1
+    #     price_increments = np.hstack((np.ones((self.config.n_trajectories, 1)) * self.config.s_0,
+    #                                   price_increments))
+    #
+    #     price = np.cumprod(price_increments, axis=1)
+    #     return price
+    #
+    # def milstein_scheme(self) -> npt.NDArray[np.float64]:
+    #     """Calculates n_trajectories number of trajectories using Milstein scheme."""
+    #     drift = self.config.drift * self.config.step_size
+    #     stochastic_increments = (self.asset_stochastic_increments * self.config.sigma
+    #                              + 0.5 * (self.config.sigma * self.config.sigma)
+    #                              * (self.asset_stochastic_increments
+    #                                 * self.asset_stochastic_increments
+    #                                 - self.config.step_size))
+    #
+    #     price_increments = drift + stochastic_increments + 1
+    #     price_increments = np.hstack((np.ones((self.config.n_trajectories, 1)) * self.config.s_0,
+    #                                   price_increments))
+    #
+    #     price = np.cumprod(price_increments, axis=1)
+    #     return price

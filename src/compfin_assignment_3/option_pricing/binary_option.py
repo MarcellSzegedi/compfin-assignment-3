@@ -7,7 +7,7 @@ import numpy as np
 import numpy.typing as npt
 import scipy.stats as stats
 
-from compfin_assignment_3.option_pricing.model_settings import BSModelSettings
+from compfin_assignment_3.option_pricing.mc_sim_settings import BSModelSettings
 from compfin_assignment_3.option_pricing.numerical_schemes import NumScheme
 
 
@@ -24,12 +24,13 @@ class BinaryOption:
         cls,
         config: BSModelSettings,
         numerical_scheme: str,
+        stochastic_increments: npt.NDArray[np.float64] = None,
     ) -> tuple[float, float, float]:
         """Simulate and price a binary option."""
         model_sim = cls(config, numerical_scheme)
 
         num_sim_func = model_sim.set_up_numerical_scheme()
-        simulated_trajectories = num_sim_func(config)
+        simulated_trajectories = num_sim_func(config, stochastic_increments=stochastic_increments)
 
         payoffs = model_sim.calculate_payoffs(simulated_trajectories)
         discounted_payoffs = model_sim.discount_payoffs(payoffs)

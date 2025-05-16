@@ -1,5 +1,6 @@
 """Plot the price of a binary option using Monte Carlo simulation compared to analytic solution."""
 
+import math
 from collections import defaultdict
 from typing import Annotated
 
@@ -9,7 +10,7 @@ import typer
 from tqdm import tqdm
 
 from compfin_assignment_3.option_pricing.binary_option import BinaryOption
-from compfin_assignment_3.option_pricing.model_settings import BSModelSettings
+from compfin_assignment_3.option_pricing.mc_sim_settings import BSModelSettings
 
 app = typer.Typer()
 
@@ -31,22 +32,26 @@ def main(
         "risk_free_rate": 0.02,
         "alpha": 0.05,
     }
-    strike_prices = np.linspace(0.2, 1.8, 100)
+    strike_prices = np.linspace(0.2, 1.8, 200)
     prices, conf_us, conf_ls = defaultdict(list), defaultdict(list), defaultdict(list)
 
-    for strike in tqdm(strike_prices, desc="Euler scheme"):
-        curr_model_settings = {**model_settings, "strike": strike}
+    for strike in tqdm(strike_prices, desc="Strike price:"):
+        curr_model_settings = BSModelSettings(**{**model_settings, "strike": strike})
+        stoch_increments = np.random.normal(
+            loc=0,
+            scale=math.sqrt(curr_model_settings.step_size),
+            size=(n_trajectories, curr_model_settings.num_steps),
+        )
+
         price, conf_u, conf_l = BinaryOption.simulate_binary_option(
-            BSModelSettings(**curr_model_settings), "euler"
+            curr_model_settings, "euler", stoch_increments
         )
         prices["euler"].append(price)
         conf_us["euler"].append(conf_u)
         conf_ls["euler"].append(conf_l)
 
-    for strike in tqdm(strike_prices, desc="Milstein scheme"):
-        curr_model_settings = {**model_settings, "strike": strike}
         price, conf_u, conf_l = BinaryOption.simulate_binary_option(
-            BSModelSettings(**curr_model_settings), "milstein"
+            curr_model_settings, "milstein"
         )
         prices["milstein"].append(price)
         conf_us["milstein"].append(conf_u)
@@ -86,5 +91,5 @@ def main(
     plt.title("Binary option price simulation")
     plt.tight_layout()
 
-    # plt.savefig("figures/binary_option_mc_sim_10000.png", dpi=600)
+    plt.savefig("figures/binary_option_mc_sim_1000.png", dpi=600)
     plt.show()
