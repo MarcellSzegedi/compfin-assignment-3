@@ -166,15 +166,11 @@ model_settings = {
     "drift": 0.01,
 }
 
-prices = HeatEquationPricing.calculate_binary_option_price(
-    HeatEquationSettings(**model_settings), "dirichlet", "implicit"
-)
-
-
-alma = 1
-
-# import matplotlib.pyplot as plt
+# prices = HeatEquationPricing.calculate_binary_option_price(
+#     HeatEquationSettings(**model_settings), "dirichlet", "implicit"
+# )
 #
+# alma = 1
 # # Create dummy 2D array
 #
 # # Create X and Y coordinates
