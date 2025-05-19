@@ -91,5 +91,5 @@ def main(
     plt.title("Binary option price simulation")
     plt.tight_layout()
 
-    plt.savefig("figures/binary_option_mc_sim_1000.png", dpi=600)
+    plt.savefig("figures/binary_option_mc_sim_100.png", dpi=600)
     plt.show()

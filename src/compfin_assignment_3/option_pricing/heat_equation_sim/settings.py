@@ -11,7 +11,6 @@ class HeatEquationSettings(BaseModel):
     s_0: float = Field(..., gt=0)
     sigma: float = Field(..., gt=0)
     t_end: float = Field(..., ge=0)
-    drift: float = Field(..., ge=0)
     strike: float = Field(..., gt=0)
     risk_free_rate: float = Field(..., ge=0)
     n_step_t: Optional[int] = Field(default=None, ge=1)
@@ -59,13 +58,6 @@ class HeatEquationSettings(BaseModel):
             self.step_size_x = (self.max_s - self.min_s) / self.n_step_x
         if self.step_size_x is not None and self.n_step_x is None:
             self.n_step_x = int(self.t_end / self.step_size_x)
-        return self
-
-    @model_validator(mode="after")
-    def comp_risk_free_rate_to_drift(self) -> "HeatEquationSettings":
-        """Check that the risk-free rate is consistent with the drift."""
-        if self.risk_free_rate != self.drift:
-            print("Warning: risk-free rate is different from drift.")
         return self
 
     @model_validator(mode="after")
