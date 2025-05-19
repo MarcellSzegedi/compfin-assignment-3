@@ -245,21 +245,7 @@ model_settings = {
     "drift": 0.01,
 }
 
-prices = HeatEquationPricing.calculate_binary_option_price(
-    HeatEquationSettings(**model_settings), "dirichlet", "crank-nicolson"
-)
-
-alma = 1
-# # Create dummy 2D array
-#
-# # Create X and Y coordinates
-# x = np.arange(prices.shape[1])
-# y = np.arange(prices.shape[0])
-# X, Y = np.meshgrid(x, y)
-#
-# # Plot
-# fig = plt.figure(figsize=(10, 7))
-# ax = fig.add_subplot(111, projection='3d')
-# ax.plot_surface(X, Y, prices, cmap='viridis')
-# ax.set_title("3D Surface Plot")
-# plt.show()
+# prices = HeatEquationPricing.calculate_binary_option_price(
+#     HeatEquationSettings(**model_settings), "dirichlet", "crank-nicolson"
+# )
+# alma = 1

@@ -9,8 +9,8 @@ import numpy as np
 import typer
 from tqdm import tqdm
 
-from compfin_assignment_3.option_pricing.binary_option import BinaryOption
-from compfin_assignment_3.option_pricing.mc_sim_settings import BSModelSettings
+from compfin_assignment_3.option_pricing.mc_sim.pricing import BinaryOption
+from compfin_assignment_3.option_pricing.mc_sim.settings import BSModelSettings
 
 app = typer.Typer()
 

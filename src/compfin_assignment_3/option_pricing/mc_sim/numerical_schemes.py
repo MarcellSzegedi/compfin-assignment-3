@@ -6,7 +6,7 @@ import numba as nb
 import numpy as np
 import numpy.typing as npt
 
-from compfin_assignment_3.option_pricing.mc_sim_settings import BSModelSettings
+from compfin_assignment_3.option_pricing.mc_sim.settings import BSModelSettings
 
 
 class NumScheme:

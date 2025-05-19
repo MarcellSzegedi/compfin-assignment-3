@@ -7,8 +7,8 @@ import numpy as np
 import numpy.typing as npt
 import scipy.stats as stats
 
-from compfin_assignment_3.option_pricing.mc_sim_settings import BSModelSettings
-from compfin_assignment_3.option_pricing.numerical_schemes import NumScheme
+from compfin_assignment_3.option_pricing.mc_sim.numerical_schemes import NumScheme
+from compfin_assignment_3.option_pricing.mc_sim.settings import BSModelSettings
 
 
 class BinaryOption:
