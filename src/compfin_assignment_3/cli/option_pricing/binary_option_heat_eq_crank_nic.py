@@ -1,4 +1,4 @@
-"""Plot the binary option price using heat equation."""
+"""Plot the binary option price using heat equation with crank-nicolson scheme."""
 
 import math
 from typing import Annotated
@@ -14,11 +14,8 @@ from compfin_assignment_3.option_pricing.heat_equation_sim.settings import HeatE
 app = typer.Typer()
 
 
-@app.command(name="binary-heat-eq")
+@app.command(name="binary-heat-eq-crank-nic")
 def main(
-    num_scheme: Annotated[
-        str, typer.Option("--num-scheme", help="Numeric scheme to use.")
-    ] = "implicit",
     boundary_cond: Annotated[
         str, typer.Option("--boundary-cond", help="Boundary condition to use.")
     ] = "dirichlet",
@@ -48,7 +45,7 @@ def main(
     for strike in tqdm(strike_prices, desc="Strike price:", position=0, leave=True):
         curr_model_settings = HeatEquationSettings(**{**model_settings, "strike": strike})
         currr_price = HeatEquationPricing.calculate_binary_option_price(
-            curr_model_settings, boundary_cond, num_scheme
+            curr_model_settings, boundary_cond, "crank-nicolson"
         )
         prices.append(currr_price)
     prices = np.array(prices)
@@ -63,5 +60,5 @@ def main(
     ax.view_init(azim=120, elev=30)
     plt.tight_layout()
 
-    plt.savefig(f"figures/binary_option_heat_eq_{num_scheme}_{boundary_cond}.png", dpi=600)
+    plt.savefig(f"figures/binary_option_heat_eq_implicit_{boundary_cond}.png", dpi=600)
     plt.show()
