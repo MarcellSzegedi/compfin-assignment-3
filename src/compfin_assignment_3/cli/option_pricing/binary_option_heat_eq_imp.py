@@ -19,7 +19,7 @@ def main(
     boundary_cond: Annotated[
         str, typer.Option("--boundary-cond", help="Boundary condition to use.")
     ] = "dirichlet",
-):
+) -> None:
     """Plot the binary option price using heat equation as a function of price and strike."""
     model_settings = {
         "n_step_x": 3000,
