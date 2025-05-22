@@ -38,20 +38,16 @@ def up_and_out_call_montecarlo(S0, K, B, T, r, sigma, N_paths=10000, N_steps=252
         log_S_t = np.log(S_t)
         log_S_tp1 = np.log(S_tp1)
 
-        # Step 1: Only apply bridge where both ends are below barrier
         mask = (log_S_t < log_B) & (log_S_tp1 < log_B)
 
-        # Step 2: Compute crossing probability for valid segments
         log_S_t_masked = log_S_t[mask]
         log_S_tp1_masked = log_S_tp1[mask]
 
         exponent = -2 * (log_B - log_S_t_masked) * (log_B - log_S_tp1_masked) / (sigma**2 * dt)
         
-        # Ensure numerical stability (prevent overflow or underflow)
         exponent = np.clip(exponent, -700, 0)
         p_cross = np.exp(exponent)
 
-        # Step 3: Simulate whether a crossing occurred
         u = np.random.uniform(size=np.sum(mask))
         crossed = np.zeros(N_paths, dtype=bool)
         crossed_indices = np.where(mask)[0]
@@ -59,7 +55,7 @@ def up_and_out_call_montecarlo(S0, K, B, T, r, sigma, N_paths=10000, N_steps=252
 
         # Step 4: Update knockout flags
         knocked_out |= crossed
-        #print(f"Total KO ratio: {np.mean(knocked_out):.2%}")
+
 
 
     # Calculate the payoff for paths that did not breach the barrier

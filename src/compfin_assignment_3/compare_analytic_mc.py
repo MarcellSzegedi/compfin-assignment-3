@@ -30,13 +30,6 @@ for N in N_paths_list:
 
 
 
-# Output comparison
-# print(f"Analytical Price   : {price_analytical:.6f}")
-# print(f"Monte Carlo Price  : {price_mc:.6f}")
-# print(f"Absolute Difference: {abs(price_mc - price_analytical):.6f}")
-# print(f"Relative Difference: {abs(price_mc - price_analytical) / price_analytical:.2%}")
-
-
 plt.figure(figsize=(10, 6))
 plt.plot(N_paths_list, errors, marker='o')
 plt.axhline(0, color='gray', linestyle='--')
